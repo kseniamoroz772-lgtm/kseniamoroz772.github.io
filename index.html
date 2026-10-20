@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fffdf4">
+<title>Алканія — хімічний квіз</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--ink:#20252b;--paper:#fffdf4;--green:#1d9f70;--pink:#ed80e5;--blue:#67a6cf;--yellow:#f2c94c;--red:#e85b5b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:4px solid #20252b;outline-offset:3px}
+.wrap{max-width:1100px;margin:auto;padding:clamp(16px,4vw,36px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-size:14px;font-weight:900;letter-spacing:2px;border:2px solid var(--ink);border-radius:999px;padding:8px 13px}
+h1{font-size:clamp(42px,8vw,86px);line-height:.96;letter-spacing:-4px;margin:28px 0 16px;font-weight:950}
+h2{font-size:clamp(28px,5vw,48px);line-height:1.05;letter-spacing:-1.5px;margin:10px 0 14px}
+p{line-height:1.6}.lead{font-size:clamp(17px,2vw,21px);max-width:720px}
+.hero{background:var(--yellow);border:3px solid var(--ink);border-radius:28px;padding:clamp(22px,5vw,48px);margin-top:24px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}
+.card{border:3px solid var(--ink);border-radius:22px;padding:22px;min-height:210px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s}
+.card:hover{transform:translateY(-4px)}.card:nth-child(1){background:var(--blue)}.card:nth-child(2){background:var(--pink)}.card:nth-child(3){background:#83d9a7}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}.card strong{font-size:25px;line-height:1.1}.card span:last-child{font-weight:700}
+.panel{background:white;border:3px solid var(--ink);border-radius:26px;padding:clamp(20px,4vw,38px);margin-top:22px}
+.hidden{display:none!important}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{border:2px solid var(--ink);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:800}
+.progress{height:12px;background:#ececec;border:2px solid var(--ink);border-radius:99px;overflow:hidden;margin:18px 0 26px}.progress>div{height:100%;background:var(--green);width:0;transition:width .2s}
+.question{font-size:clamp(25px,4vw,39px);font-weight:900;line-height:1.2;letter-spacing:-.8px;margin:12px 0}
+.subtitle{color:#5d6268;margin-top:0}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px}
+.option{background:#fffdf4;border:2.5px solid var(--ink);border-radius:16px;padding:16px;text-align:left;font-weight:750;min-height:66px;transition:transform .12s,background .12s}
+.option:hover:not(:disabled){transform:translateY(-2px);background:#f6f1df}.option.correct{background:#a7e8bf}.option.wrong{background:#ffc1bd}.option:disabled{cursor:default}
+.feedback{border:2px solid var(--ink);border-radius:16px;padding:16px;margin-top:18px;line-height:1.55}.feedback.good{background:#e0f8e8}.feedback.bad{background:#fff0d6}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{border:2.5px solid var(--ink);border-radius:999px;padding:12px 20px;font-weight:850;background:var(--yellow)}.btn.secondary{background:white}.btn.green{background:#83d9a7}
+.note{font-size:14px;color:#555}.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#f1f3f5;padding:2px 6px;border-radius:6px;white-space:normal}
+.result-score{font-size:clamp(50px,10vw,88px);font-weight:950;letter-spacing:-4px;margin:12px 0}
+footer{padding:26px 0 6px;font-size:13px;color:#62666b}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.card{min-height:150px}.options{grid-template-columns:1fr}h1{letter-spacing:-2px}.panel{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="logo">ФАЙНИЙ ХІМІК · GAME LAB</div><div class="pill">ОРГАНІЧНА ХІМІЯ</div></header>
+  <main>
+    <section id="home">
+      <div class="hero">
+        <div class="eyebrow">Хімічний квіз · 7–11 класи</div>
+        <h1>АЛКАНІЯ:<br>місія вуглеводні</h1>
+        <p class="lead">Перевір, чи вмієш розпізнавати алкани, передбачати їхні реакції та добувати потрібну речовину. Обирай рівень, збирай бали й пояснюй хімію, а не просто вгадуй!</p>
+        <div class="actions"><button class="btn" onclick="startLevel(1)">Почати гру ↗</button></div>
+      </div>
+      <h2 style="margin-top:34px">Обери випробування</h2>
+      <div class="grid">
+        <button class="card" onclick="startLevel(1)"><span class="eyebrow">Рівень 01 · База</span><strong>Основи алканів</strong><span>Формули, будова, гомологи →</span></button>
+        <button class="card" onclick="startLevel(2)"><span class="eyebrow">Рівень 02 · Реакції</span><strong>Лабораторія реакцій</strong><span>Горіння, заміщення, крекінг →</span></button>
+        <button class="card" onclick="startLevel(3)"><span class="eyebrow">Рівень 03 · Майстерність</span><strong>Синтез алканів</strong><span>Добування та ланцюжки →</span></button>
+      </div>
+      <p class="note">У кожному рівні — 8 запитань. За правильну відповідь нараховується 1 бал. Підказки доступні без штрафу.</p>
+    </section>
+
+    <section id="game" class="hidden">
+      <div class="row"><button class="btn secondary" onclick="goHome()">← До рівнів</button><span class="pill" id="level-label">Рівень 1</span><span class="pill" id="score-label">Бали: 0</span></div>
+      <div class="panel">
+        <div class="row"><span class="eyebrow" id="topic-label">ОСНОВИ АЛКАНІВ</span><span class="pill" id="progress-label">1 / 8</span></div>
+        <div class="progress"><div id="progress-bar"></div></div>
+        <div class="eyebrow" id="kind-label">ОБЕРИ ОДНУ ВІДПОВІДЬ</div>
+        <h2 class="question" id="question"></h2>
+        <p class="subtitle" id="subtitle"></p>
+        <div class="options" id="options"></div>
+        <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+        <div class="actions">
+          <button class="btn secondary" id="hint-btn" onclick="showHint()">Підказка 💡</button>
+          <button class="btn green hidden" id="next-btn" onclick="nextQuestion()">Наступне питання →</button>
+        </div>
+        <p class="note" id="hint-text"></p>
+      </div>
+    </section>
+
+    <section id="result" class="hidden">
+      <div class="hero">
+        <div class="eyebrow">Випробування завершено</div>
+        <h2 id="result-title">Чудова робота!</h2>
+        <div class="result-score" id="result-score">0 / 8</div>
+        <p id="result-message"></p>
+        <div class="actions"><button class="btn" id="replay-btn" onclick="startLevel(lastLevel)">Пройти ще раз ↻</button><button class="btn secondary" onclick="goHome()">Обрати інший рівень</button><button class="btn green hidden" id="next-level-btn" onclick="startLevel(lastLevel+1)">Наступний рівень →</button></div>
+      </div>
+      <div class="panel"><h2>Що варто повторити</h2><p id="review-text"></p></div>
+    </section>
+  </main>
+  <footer>Алканія · Навчальна гра з органічної хімії. Під час відповідей звертай увагу не лише на продукт реакції, а й на умови її перебігу.</footer>
+</div>
+<script>
+const levels = {
+  1: {
+    title:"Основи алканів", topic:"ОСНОВИ АЛКАНІВ",
+    questions:[
+      {q:"Яка загальна формула ациклічних алканів?",s:"Обери формулу гомологічного ряду.",o:["CₙH₂ₙ","CₙH₂ₙ₊₂","CₙH₂ₙ₋₂","CₙHₙ"],a:1,h:"Алкани — насичені ациклічні вуглеводні з максимальною кількістю атомів Гідрогену.",e:"Для алканів загальна формула CₙH₂ₙ₊₂, де n ≥ 1."},
+      {q:"Яка формула метану?",s:"Найпростіший представник алканів.",o:["CH₄","C₂H₆","CH₂","C₂H₄"],a:0,h:"У молекулі метану один атом Карбону.",e:"Метан має формулу CH₄. Навколо атома Карбону — чотири одинарні ковалентні зв’язки."},
+      {q:"Яка речовина є наступним гомологом пропану?",s:"Гомологи відрізняються на одну групу –CH₂–.",o:["Етан","Бутан","Прен","Пропен"],a:1,h:"Додай до формули пропану CH₃–CH₂–CH₃ одну групу –CH₂–.",e:"Наступний гомолог пропану C₃H₈ — бутан C₄H₁₀."},
+      {q:"Який зв’язок характерний для алканів?",s:"Подумай про насичені вуглеводні.",o:["Лише подвійні","Лише потрійні","Одинарні зв’язки C–C і C–H","Обов’язково йонні"],a:2,h:"Алкани називають насиченими, бо між атомами Карбону немає кратних зв’язків.",e:"В алканах є одинарні ковалентні зв’язки C–C та C–H."},
+      {q:"Яка молекулярна формула пентану?",s:"У пентані п’ять атомів Карбону.",o:["C₅H₁₀","C₅H₁₂","C₄H₁₀","C₆H₁₄"],a:1,h:"Підстав n = 5 у формулу CₙH₂ₙ₊₂.",e:"C₅H₂·₅₊₂ = C₅H₁₂."},
+      {q:"Який із наведених вуглеводнів — алкан?",s:"Зверни увагу на тип зв’язків і формулу.",o:["Етен C₂H₄","Етин C₂H₂","Етан C₂H₆","Бензен C₆H₆"],a:2,h:"Алкани відповідають формулі CₙH₂ₙ₊₂.",e:"Етан C₂H₆ — алкан. Етен має подвійний, а етин — потрійний зв’язок."},
+      {q:"Як називається алкан із формулою C₃H₈?",s:"Це третій представник гомологічного ряду.",o:["Метан","Етан","Пропан","Бутан"],a:2,h:"Префікс «проп-» означає три атоми Карбону.",e:"C₃H₈ — пропан."},
+      {q:"Чому алкани називають насиченими вуглеводнями?",s:"Вибери найточніше пояснення.",o:["Вони добре розчиняються у воді","Містять лише одинарні зв’язки між атомами Карбону","Містять Оксиген","Усі є рідинами"],a:1,h:"У назві йдеться про максимальну кількість атомів Гідрогену для ациклічної будови.",e:"У відкритому карбоновому ланцюзі алканів є лише одинарні зв’язки, тому вони насичені Гідрогеном."}
+    ]
+  },
+  2: {
+    title:"Лабораторія реакцій", topic:"ХІМІЧНІ ВЛАСТИВОСТІ",
+    questions:[
+      {q:"Які продукти утворюються під час повного горіння метану?",s:"За достатньої кількості кисню.",o:["CO і H₂","C і H₂O","CO₂ і H₂O","C₂H₆ і O₂"],a:2,h:"Повне горіння вуглеводнів утворює оксиди Карбону та Гідрогену.",e:"CH₄ + 2O₂ → CO₂ + 2H₂O."},
+      {q:"Який тип реакції відбувається між метаном і хлором на світлі?",s:"Умови реакції важливі!",o:["Приєднання","Заміщення","Естерифікація","Нейтралізація"],a:1,h:"Атом Гідрогену в метані заміщується атомом Хлору.",e:"CH₄ + Cl₂ → CH₃Cl + HCl (світло). Це реакція радикального заміщення."},
+      {q:"Які умови потрібні для хлорування метану за звичайного шкільного опису реакції?",s:"Згадай, що запускає реакцію.",o:["Світло (hν)","Лише охолодження до 0 °C","Водний розчин лугу","Каталізатор фермент"],a:0,h:"У рівнянні часто над стрілкою записують hν.",e:"Світло ініціює радикальний ланцюговий механізм хлорування метану."},
+      {q:"Що таке крекінг алканів?",s:"Цей процес використовують під час переробки нафти.",o:["Сполучення двох малих молекул","Розщеплення великих молекул на менші","Розчинення у воді","Перетворення на солі"],a:1,h:"Великий вуглеводневий ланцюг розпадається на коротші.",e:"Під час крекінгу довголанцюгові вуглеводні розщеплюються, часто з утворенням алкану й алкену."},
+      {q:"Які продукти можливі під час крекінгу декану?",s:"Один із можливих варіантів має бути збалансований за атомами.",o:["C₁₀H₂₂ → C₅H₁₂ + C₅H₁₀","C₁₀H₂₂ → C₁₀H₂₀ + H₂O","C₁₀H₂₂ → 10CO₂","C₁₀H₂₂ → C₁₀H₂₂O"],a:0,h:"Перевір суму атомів C і H ліворуч і праворуч.",e:"C₁₀H₂₂ → C₅H₁₂ + C₅H₁₀: з обох боків 10 атомів C і 22 атоми H."},
+      {q:"Що утворюється під час дегідрування етану?",s:"Дегідрування — відщеплення водню.",o:["Етанол і вода","Етен і водень","Етин і кисень","Метан і хлор"],a:1,h:"Від молекули алкану відщеплюється H₂, утворюється кратний зв’язок.",e:"C₂H₆ → C₂H₄ + H₂ (за нагрівання, зазвичай у присутності каталізатора)."},
+      {q:"Яка реакція найкраще демонструє відносну інертність алканів за звичайних умов?",s:"Вибери твердження, яке відповідає типовим властивостям.",o:["Миттєво реагують із водою","Знебарвлюють бромну воду без освітлення","Зазвичай не реагують із розчинами кислот і лугів","Легко полімеризуються"],a:2,h:"У алканів міцні неполярні або слабкополярні зв’язки C–C та C–H.",e:"За звичайних умов алкани малоактивні; для характерних реакцій часто потрібні нагрівання, світло або каталізатор."},
+      {q:"Яке рівняння повного горіння пропану складено правильно?",s:"Перевір кількість атомів C, H та O.",o:["C₃H₈ + O₂ → 3CO₂ + 4H₂O","C₃H₈ + 3O₂ → 3CO + 4H₂O","C₃H₈ + 5O₂ → 3CO₂ + 4H₂O","C₃H₈ + 4O₂ → 3CO₂ + 4H₂O"],a:2,h:"Праворуч потрібно 3CO₂ і 4H₂O. Порахуй атоми Оксигену.",e:"C₃H₈ + 5O₂ → 3CO₂ + 4H₂O. Праворуч 10 атомів O, отже ліворуч потрібно 5O₂."}
+    ]
+  },
+  3: {
+    title:"Синтез алканів", topic:"МЕТОДИ ДОБУВАННЯ",
+    questions:[
+      {q:"Який продукт утвориться під час реакції Вюрца з хлорометану?",s:"Реакція: 2R–X + 2Na → R–R + 2NaX.",o:["Метан","Етан","Пропан","Метанол"],a:1,h:"Дві метильні групи з’єднуються між собою.",e:"2CH₃Cl + 2Na → C₂H₆ + 2NaCl (сухий етер)."},
+      {q:"Який алкан можна добути декарбоксилюванням ацетату натрію содовим вапном?",s:"Під час реакції карбоксильна група відщеплюється, ланцюг скорочується на один атом C.",o:["Метан","Етан","Пропан","Бутан"],a:0,h:"У солі CH₃COONa після відщеплення CO₂ залишається фрагмент із одним атомом Карбону.",e:"CH₃COONa + NaOH → CH₄ + Na₂CO₃ (нагрівання, CaO)."},
+      {q:"Який продукт утворюється під час гідрування етену?",s:"До кратного зв’язку приєднується водень.",o:["Етан","Етин","Етанол","Етаналь"],a:0,h:"Подвійний зв’язок C=C перетворюється на одинарний.",e:"C₂H₄ + H₂ → C₂H₆ (каталізатор Ni, Pt або Pd)."},
+      {q:"Який газ утвориться під час взаємодії карбіду алюмінію з водою?",s:"Це спеціальний спосіб добування найпростішого алкану.",o:["Етен","Метан","Етан","Пропан"],a:1,h:"У продукті реакції є один атом Карбону.",e:"Al₄C₃ + 12H₂O → 3CH₄ + 4Al(OH)₃."},
+      {q:"Який реагент потрібен, щоб відновити хлороетан до етану в типовій схемі?",s:"Галогеналкан перетворюють на відповідний алкан заміною галогену на Гідроген.",o:["H₂O","Відновник, наприклад H₂ за відповідних умов","NaCl","CO₂"],a:1,h:"У продукті має бути C₂H₆ замість C₂H₅Cl.",e:"Галогеналкани можна відновлювати до алканів відповідними відновниками; конкретні реагенти й умови залежать від обраної методики."},
+      {q:"Який алкан утвориться під час електролізу водного розчину пропаноату натрію за реакцією Кольбе?",s:"Для реакції Кольбе радикали карбоксилатів сполучаються попарно.",o:["Етан","Бутан","Пропан","Пентан"],a:1,h:"Після відщеплення CO₂ від CH₃CH₂COO⁻ утворюється етильний радикал; два радикали сполучаються.",e:"2CH₃CH₂COONa + 2H₂O → C₄H₁₀ + 2CO₂ + H₂ + 2NaOH (сумарне рівняння електролізу)."},
+      {q:"Який спосіб найкраще підходить для добування етану з етену?",s:"Потрібно перетворити алкен на насичений вуглеводень.",o:["Галогенування","Гідрування","Нітрування","Дегідрування"],a:1,h:"Гідрування — приєднання H₂.",e:"C₂H₄ + H₂ → C₂H₆ за наявності каталізатора."},
+      {q:"Обери правильно складене рівняння реакції Вюрца для добування бутану.",s:"Використай галогеноетан і натрій.",o:["2C₂H₅Cl + 2Na → C₄H₁₀ + 2NaCl","C₂H₅Cl + NaOH → C₄H₁₀","C₂H₄ + H₂O → C₄H₁₀","C₄H₁₀ + Cl₂ → C₂H₆"],a:0,h:"Дві етильні групи C₂H₅ з’єднуються в ланцюг із чотирьох атомів Карбону.",e:"2C₂H₅Cl + 2Na → C₄H₁₀ + 2NaCl (сухий етер)."}
+    ]
+  }
+};
+let lastLevel=1, currentLevel=1, index=0, score=0, picked=false, hintShown=false, missed=[];
+function startLevel(level){
+  if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback?.impactOccurred('light');lastLevel=level;currentLevel=level;index=0;score=0;picked=false;hintShown=false;missed=[];document.getElementById('home').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('game').classList.remove('hidden');document.getElementById('level-label').textContent='Рівень '+level+' · '+levels[level].title;document.getElementById('topic-label').textContent=levels[level].topic;renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
+function renderQuestion(){const qs=levels[currentLevel].questions,q=qs[index];picked=false;hintShown=false;document.getElementById('progress-label').textContent=(index+1)+' / '+qs.length;document.getElementById('progress-bar').style.width=((index)/qs.length*100)+'%';document.getElementById('score-label').textContent='Бали: '+score;document.getElementById('question').textContent=q.q;document.getElementById('subtitle').textContent=q.s;document.getElementById('options').innerHTML='';document.getElementById('feedback').className='feedback hidden';document.getElementById('feedback').textContent='';document.getElementById('hint-text').textContent='';document.getElementById('hint-btn').classList.remove('hidden');document.getElementById('next-btn').classList.add('hidden');q.o.forEach((option,i)=>{const b=document.createElement('button');b.className='option';b.textContent=String.fromCharCode(65+i)+'. '+option;b.onclick=()=>answer(i,b);document.getElementById('options').appendChild(b);});}
+function answer(choice,btn){
+  if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback?.selectionChanged();if(picked)return;picked=true;const q=levels[currentLevel].questions[index],buttons=[...document.querySelectorAll('.option')];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('correct');});const f=document.getElementById('feedback');if(choice===q.a){score++;f.className='feedback good';f.innerHTML='<strong>Правильно! +1 бал</strong><br>'+q.e;}else{missed.push(q.q);btn.classList.add('wrong');f.className='feedback bad';f.innerHTML='<strong>Не зовсім.</strong> Правильна відповідь: <b>'+q.o[q.a]+'</b>.<br>'+q.e;}document.getElementById('score-label').textContent='Бали: '+score;document.getElementById('progress-bar').style.width=((index+1)/levels[currentLevel].questions.length*100)+'%';document.getElementById('hint-btn').classList.add('hidden');const n=document.getElementById('next-btn');n.classList.remove('hidden');n.textContent=index===levels[currentLevel].questions.length-1?'Побачити результат →':'Наступне питання →';}
+function showHint(){if(picked||hintShown)return;hintShown=true;document.getElementById('hint-text').textContent='💡 Підказка: '+levels[currentLevel].questions[index].h;}
+function nextQuestion(){if(!picked)return;if(index<levels[currentLevel].questions.length-1){index++;renderQuestion();}else showResult();}
+function showResult(){
+  if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback?.notificationOccurred(score === levels[currentLevel].questions.length ? 'success' : 'warning');document.getElementById('game').classList.add('hidden');document.getElementById('result').classList.remove('hidden');const total=levels[currentLevel].questions.length;document.getElementById('result-score').textContent=score+' / '+total;document.getElementById('result-title').textContent=score===total?'Ідеально! Ти майстер алканів!':score>=total*0.65?'Чудова робота!':'Є що дослідити — і це нормально!';document.getElementById('result-message').textContent='Ти завершив рівень «'+levels[currentLevel].title+'». '+(score===total?'Усі відповіді правильні!': 'Переглянь пояснення до питань, які виявилися складними.');document.getElementById('review-text').textContent=missed.length?('Рекомендуємо повторити: '+missed.join(' • ')): 'Помилок немає — чудове засвоєння теми!';document.getElementById('next-level-btn').classList.toggle('hidden',currentLevel>=3);document.getElementById('progress-bar').style.width='100%';window.scrollTo({top:0,behavior:'smooth'});}
+function goHome(){document.getElementById('game').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('home').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+// Telegram Mini App: повідомляємо Telegram, що інтерфейс готовий.
+if (window.Telegram && window.Telegram.WebApp) {
+  window.Telegram.WebApp.ready();
+  window.Telegram.WebApp.expand();
+  window.Telegram.WebApp.setHeaderColor('#fffdf4');
+  window.Telegram.WebApp.setBackgroundColor('#fffdf4');
+}
+</script>
+</body>
+</html>
